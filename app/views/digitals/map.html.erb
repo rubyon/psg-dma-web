@@ -1,0 +1,56 @@
+<script>
+    window.addEventListener('resize', function() {
+        window.resizeTo(1100, 800);
+    });
+
+    let tilesetWidth;
+    let tilesetHeight;
+    let tileColumns;
+
+    // XMLHttpRequest를 사용하여 파일 불러오기
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/psg-dma-sample/psg-dma.tmx', true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var xmlString = xhr.responseText;
+            // XML 파싱
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+            // 필요한 속성 값 가져오기
+            tilesetWidth = xmlDoc.getElementsByTagName('tileset')[0].getAttribute('tilewidth');
+            tilesetHeight = xmlDoc.getElementsByTagName('tileset')[0].getAttribute('tileheight');
+            tileColumns = xmlDoc.getElementsByTagName('tileset')[0].getAttribute('columns');
+        }
+    };
+    xhr.send();
+
+    function getImageIndex(event) {
+        var x = event.offsetX;
+        var y = event.offsetY;
+
+        var row = Math.floor(y / (tilesetHeight/2));
+        var column = Math.floor(x / (tilesetWidth/2));
+
+        var imageIndex = row * tileColumns + column;
+
+        // 현재 페이지 URL에서 GET 파라미터 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // 특정 파라미터 값 가져오기
+        const divParams = urlParams.get('div');
+
+        let divElement = window.opener.document.getElementById(divParams);
+
+        if (divElement) {
+            divElement.value = imageIndex;
+        }
+
+        var div = window.opener.document.getElementById(`${divParams}_image`);
+        div.style.backgroundImage = 'url("/psg-dma-sample/map.png")';
+        div.style.backgroundPosition = -column * tilesetWidth + "px " + -row * tilesetHeight + "px";
+
+        self.close();
+    }
+</script>
+
+<img src="/psg-dma-sample/map.png" width="1000px" onclick="getImageIndex(event)">

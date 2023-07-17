@@ -1,0 +1,54 @@
+{ "compressionlevel":-1,
+ "height":6,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[2, 8, 8, 8, 8, 7, 7, 7, 7, 3,
+            6, 6, 6, 6, 6, 0, 0, 0, 53, 54,
+            23, 24, 25, 22, 21, 0, 0, 0, 63, 64,
+            33, 34, 35, 32, 31, 0, 0, 0, 73, 74,
+            43, 44, 45, 42, 41, 0, 0, 0, 83, 84,
+            0, 0, 0, 0, 0, 0, 0, 0, 93, 94],
+         "height":6,
+         "id":3,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            14, 14, 14, 14, 14, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":6,
+         "id":4,
+         "name":"Tile Layer 2",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":10,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":5,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.10.1",
+ "tileheight":100,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"../tiles.tsx"
+        }],
+ "tilewidth":100,
+ "type":"map",
+ "version":"1.10",
+ "width":10
+}

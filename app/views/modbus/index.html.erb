@@ -1,0 +1,172 @@
+<style>
+    .tile-map {
+        display: grid;
+        grid-template-columns: repeat(<%= @layer_data[0][0][:width] %>, 0fr); /* Adjust the number of columns as needed */
+        gap: 0; /* Adjust the gap between tiles if desired */
+    }
+
+    .tile {
+        width: <%= @tile_width %>px;
+        height: <%= @tile_height %>px;
+        background-image: url("/psg-dma-sample/<%= @tile_image %>");
+        background-repeat: no-repeat;
+    }
+
+    .empty-tile {
+        width: <%= @tile_width %>px;
+        height: <%= @tile_height %>px;
+    }
+
+</style>
+<div id="page" style="display: none;"><%= @page %></div>
+<div id="modbus" class="flex justify-center">
+  <% @layer_data.each_with_index do |layer, layer_index| %>
+    <div class="tile-map absolute">
+      <% layer[0][:data].each_with_index do |tile_id, tile_index| %>
+        <%
+            color = "red"
+            border = 1
+            if @tile_ids.include?(tile_index.to_i)
+              color = "blue"
+              border = 1
+            end
+        %>
+        <% if tile_id != -1 %>
+          <div id="<%= layer[0][:name] %>-<%= tile_index %>" class="tile" style="background-position: <%= calculate_background_position(tile_id) %>; <%= "border: #{border}px solid #{color}; color: #{color};" if @edit == "on"%>"><div style="position: absolute;"><%= tile_index if layer_index == @layer_data.length - 1 and @edit == "on" %></div></div>
+        <% else %>
+          <div id="<%= layer[0][:name] %>-<%= tile_index %>" class="empty-tile" style="<%= "border: #{border}px solid #{color}; color: #{color};" if @edit == "on"%>"><div style="position: absolute;"><%= tile_index if layer_index == @layer_data.length - 1 and @edit == "on" %></div></div>
+        <% end %>
+      <% end %>
+      <% if layer_index == @layer_data.length - 1 %>
+        <div id="custom-div" style="position: relative; width: 100%; justify-content: left;"></div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div id="contextMenu" style="position: absolute; background-color: white; font-size: 9pt; margin: 0px; padding: 10px; display: none;">
+  <div id="layer-no"></div>
+  <div id="menu-digital" ><%= link_to "디지털 태그", "#", id: "action-1", target: "popup_window", onclick: "openCenteredWindow(this.href, 'popup_window', 600, 400); return false;", turbo: false %></div>
+  <div>아나로그 태그</div>
+  <div>바게이지 태그</div>
+  <div>텍스트 태그</div>
+</div>
+
+<script>
+    const divElement = document.getElementById('modbus');
+    let width = <%= @tile_width %> * <%= @layer_data[0][0][:width] %>;
+    let height = <%= @tile_height %> * <%= @layer_data[0][0][:height] %>;
+    let scaleRatio;
+
+    function roundToEven(value) {
+        console.log(`VALUE: ${value}`);
+        const roundedValue = Math.round((value + Number.EPSILON) * 100) / 100; // 소수점 둘째 자리까지 반올림합니다.
+        console.log(`roundedValue: ${roundedValue}`);
+        const decimalPart = roundedValue % 1; // 소수점 아래 부분을 가져옵니다.
+        const roundedDecimalPart = Math.round(decimalPart * 100); // 소수점 아래 부분을 소수점 둘째 자리까지 반올림합니다.
+        if (roundedDecimalPart % 2 !== 0) {
+            // 소수점 아래 부분이 홀수인 경우, 다음 짝수로 변경합니다.
+            const newDecimalPart = (roundedDecimalPart + 1) / 100;
+            return Math.floor(roundedValue) + newDecimalPart;
+        }
+        return roundedValue;
+    }
+
+    function updateScale() {
+        const browserWidth = window.innerWidth; // 브라우저의 가로 길이
+        const browserHeight = window.innerHeight - 100; // 브라우저의 세로 길이
+        console.log('브라우저 가로 길이:', browserWidth, '픽셀');
+        console.log('브라우저 세로 길이:', browserHeight, '픽셀');
+
+        if (width > browserWidth || height > browserHeight) {
+            const widthRatio = (browserWidth - (browserWidth * 0.01)) / width;
+            const heightRatio = (browserHeight - (browserHeight * 0.01)) / height;
+            scaleRatio = Math.min(widthRatio, heightRatio);
+            scaleRatio = roundToEven(scaleRatio);
+        } else {
+            scaleRatio = 1;
+        }
+
+        // if (width > browserWidth ) {
+        //     const widthRatio = (browserWidth - ( browserWidth * 0.05 )) / width;
+        //     scaleRatio = roundToEven(widthRatio);
+        // } else {
+        //     scaleRatio = 1;
+        // }
+
+        console.log(`RATIO: ${scaleRatio}`);
+        divElement.style.transform = 'scale(' + scaleRatio + ')';
+    }
+
+    window.addEventListener('resize', updateScale)
+    updateScale() // 초기 로드 시 스케일 업데이트
+
+    function handleRightClick(event) {
+        event.preventDefault(); // 기본 오른쪽 클릭 메뉴를 무시합니다.
+        let divId = event.target.id; // 클릭된 div의 id를 가져옵니다.
+
+        if (divId.includes("_") || divId === "") {
+            alert("다시 선택 해주세요");
+            return;
+        }
+
+        divId = divId.match(/\d+/g);
+
+        // 컨텍스트 메뉴의 위치를 마우스 위치로 설정합니다.
+        var mouseX = event.clientX;
+        var mouseY = event.clientY;
+        var menuWidth = contextMenu.offsetWidth;
+        var menuHeight = contextMenu.offsetHeight;
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+
+        // 마우스 위치에 따라 컨텍스트 메뉴 위치를 조정합니다.
+        var posX = mouseX + menuWidth > windowWidth ? mouseX - menuWidth : mouseX;
+        var posY = mouseY + menuHeight > windowHeight ? mouseY - menuHeight : mouseY;
+
+        // 컨텍스트 메뉴의 위치를 설정합니다.
+        contextMenu.style.left = posX + 'px';
+        contextMenu.style.top = posY + 'px';
+
+        let layerNo = document.getElementById('layer-no');
+        layerNo.innerText = `Layer# ${divId}`;
+        let action1 = document.getElementById('action-1');
+        action1.href = `/digitals/${divId}/edit?page=<%= @page %>`;
+
+
+        let digitalCheck = document.getElementById(`digital-${divId}`);
+
+        const digiCheck = digitalCheck.style.backgroundPosition;
+
+        let digitalMenu = document.getElementById("menu-digital");
+        if (digiCheck === "") {
+            digitalMenu.style.display = "none";
+        } else {
+            digitalMenu.style.display = "block";
+        }
+
+        // 컨텍스트 메뉴를 표시합니다.
+        contextMenu.style.display = 'block';
+    }
+
+    // edit 파라미터 값이 "on"인 경우에만 컨텍스트 메뉴를 처리합니다.
+    var urlParams = new URLSearchParams(window.location.search);
+    var editParam = urlParams.get('edit');
+    if (editParam === 'on') {
+        document.addEventListener('contextmenu', handleRightClick);
+    }
+
+    // 다른 곳을 클릭할 때 컨텍스트 메뉴를 숨깁니다.
+    document.addEventListener('click', function() {
+        contextMenu.style.display = 'none';
+    });
+
+
+    function openCenteredWindow(url, name, width, height) {
+        var left = (window.innerWidth - width) / 2;
+        var top = (window.innerHeight - height) / 2;
+        var options = "width=" + width + ",height=" + height + ",top=" + top + ",left=" + left;
+        window.open(url, name, options);
+    }
+
+</script>

@@ -1,0 +1,78 @@
+<%
+  @digital.on = -1 if @digital.on.blank?
+  @digital.off = -1 if @digital.off.blank?
+
+  tmx_file = File.join(Rails.root, 'public', 'psg-dma-sample','psg-dma.tmx')
+  # TMX 파일 읽기
+  tmx_data = Tmx.load(tmx_file)
+
+  # 타일셋 정보 출력
+  tmx_data.tilesets.each do |tileset|
+    puts "Tileset Name: #{tileset.name}"
+    puts "First GID: #{tileset.firstgid}"
+    puts "Tile Width: #{tileset.tilewidth}"
+    puts "Tile Height: #{tileset.tileheight}"
+    puts "Tileset Image: #{tileset.image}"
+    puts "Tile Count: #{tileset.tilecount}"
+    puts "Columns: #{tileset.columns}"
+    @tile_image = tileset.image
+    @tile_width = tileset.tilewidth
+    @tile_height = tileset.tileheight
+    puts "---"
+  end
+%>
+
+<style>
+    .tile {
+        width: <%= @tile_width %>px;
+        height: <%= @tile_height %>px;
+        background-image: url("/psg-dma-sample/<%= @tile_image %>");
+        background-repeat: no-repeat;
+    }
+</style>
+
+<script>
+    window.opener.location.reload();  // 부모 창 새로고침
+</script>
+
+<%= form_with model: digital do |form| %>
+  <div class="mb-6">
+    <label for="page_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Page ID</label>
+    <%= form.text_field :page_id, value: params[:page], class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true, readonly: true %>
+  </div>
+  <div class="mb-6">
+    <label for="tile_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tile ID</label>
+    <%= form.text_field :tile_id, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true, readonly: true %>
+  </div>
+  <div class="mb-6">
+    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+    <%= form.text_field :name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
+  </div>
+  <div class="mb-6">
+    <label for="on" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">On Image</label>
+    <%= form.hidden_field :on, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
+    <img id="digital_on_image" class="tile" style="background-position: <%= calculate_background_position(@digital.on) %>;" onclick="openOrFocusPopupWindow('digital_on')">
+  </div>
+  <div class="mb-6">
+    <label for="off" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Off Image</label>
+    <%= form.hidden_field :off, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
+    <img id="digital_off_image" class="tile" style="background-position: <%= calculate_background_position(@digital.off) %>;" onclick="openOrFocusPopupWindow('digital_off')">
+  </div>
+  <div class="mb-6">
+    <label for="modbus_bit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Modbus Bit</label>
+    <%= form.text_field :modbus_bit, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
+  </div>
+  <%= submit_tag "Submit", class: "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800", data: { turbo: false } %>
+<% end %>
+
+<script>
+    var popupWindow = null;
+
+    function openOrFocusPopupWindow(div) {
+        if (popupWindow && !popupWindow.closed) {
+            popupWindow.focus();
+        } else {
+            popupWindow = window.open(`/map?div=${div}`, "popupWindow", "width=1100,height=800,resizable=no");
+        }
+    }
+</script>
