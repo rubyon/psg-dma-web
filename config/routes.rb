@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   get "/api/get_map/:id", to: "api#get_map"
 
   resources :digitals
+  resources :analogs
+  resources :titles
+  resources :gauges
 
   get "/map", to: "digitals#map"
 

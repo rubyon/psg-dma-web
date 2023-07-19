@@ -19,6 +19,7 @@
 
 </style>
 <div id="page" style="display: none;"><%= @page %></div>
+
 <div id="modbus" class="flex justify-center">
   <% @layer_data.each_with_index do |layer, layer_index| %>
     <div class="tile-map absolute">
@@ -47,9 +48,9 @@
 <div id="contextMenu" style="position: absolute; background-color: white; font-size: 9pt; margin: 0px; padding: 10px; display: none;">
   <div id="layer-no"></div>
   <div id="menu-digital" ><%= link_to "디지털 태그", "#", id: "action-1", target: "popup_window", onclick: "openCenteredWindow(this.href, 'popup_window', 600, 400); return false;", turbo: false %></div>
-  <div>아나로그 태그</div>
-  <div>바게이지 태그</div>
-  <div>텍스트 태그</div>
+  <div id="menu-analog"><%= link_to "아나로그 태그", "#", id: "action-2", target: "popup_window", onclick: "openCenteredWindow(this.href, 'popup_window', 600, 400); return false;", turbo: false %></div>
+  <div id="menu-gauge"><%= link_to "바게이지 태그", "#", id: "action-3", target: "popup_window", onclick: "openCenteredWindow(this.href, 'popup_window', 600, 400); return false;", turbo: false %></div>
+  <div id="menu-text"><%= link_to "텍스트 태그", "#", id: "action-4", target: "popup_window", onclick: "openCenteredWindow(this.href, 'popup_window', 600, 400); return false;", turbo: false %></div>
 </div>
 
 <script>
@@ -105,10 +106,10 @@
         event.preventDefault(); // 기본 오른쪽 클릭 메뉴를 무시합니다.
         let divId = event.target.id; // 클릭된 div의 id를 가져옵니다.
 
-        if (divId.includes("_") || divId === "") {
-            alert("다시 선택 해주세요");
-            return;
-        }
+        // if (divId.includes("_") || divId === "") {
+        //     alert("다시 선택 해주세요");
+        //     return;
+        // }
 
         divId = divId.match(/\d+/g);
 
@@ -132,6 +133,12 @@
         layerNo.innerText = `Layer# ${divId}`;
         let action1 = document.getElementById('action-1');
         action1.href = `/digitals/${divId}/edit?page=<%= @page %>`;
+        let action2 = document.getElementById('action-2');
+        action2.href = `/analogs/${divId}/edit?page=<%= @page %>`;
+        let action3 = document.getElementById('action-3');
+        action3.href = `/gauges/${divId}/edit?page=<%= @page %>`;
+        let action4 = document.getElementById('action-4');
+        action4.href = `/titles/${divId}/edit?page=<%= @page %>`;
 
 
         let digitalCheck = document.getElementById(`digital-${divId}`);
@@ -168,5 +175,4 @@
         var options = "width=" + width + ",height=" + height + ",top=" + top + ",left=" + left;
         window.open(url, name, options);
     }
-
 </script>

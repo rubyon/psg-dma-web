@@ -9,7 +9,6 @@ end
 
 def subscribe_channel(ws)
   ws.on :open do
-    # Send command to subscribe to ActionCable's specific channel after connect to socket
     ws.send({"command":"subscribe","identifier":"{\"channel\":\"ModbusChannel\"}"}.to_json)
   end
 end
@@ -29,7 +28,7 @@ end
 
 def close_open_files
   ObjectSpace.each_object(File) do |file|
-    file.close if !file.closed?
+    file.close unless file.closed?
   end
 end
 
@@ -53,8 +52,8 @@ while true
 
             puts "Modbus Value: #{regs[0..i]}"
 
-            ( i + 1 ).times do |i|
-              digital += regs[i][0].to_i.to_s(2).rjust(16,'0').reverse
+            ( i + 1 ).times do |index|
+              digital += regs[index][0].to_i.to_s(2).rjust(16,'0').reverse
             end
 
             puts "DIGITAL: #{digital}"

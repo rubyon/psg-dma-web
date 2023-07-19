@@ -2,6 +2,11 @@ class DigitalsController < ApplicationController
   layout 'edit'  # 레이아웃 비활성화
 
   def edit
+    permitted_params = params.permit(:page)
+    @page = 1
+    @page = permitted_params[:page].to_i if permitted_params[:page].present?
+    @edit = permitted_params[:edit]
+
     @digital = Digital.find_by_tile_id(params[:id])
     if @digital.nil?
       @digital = Digital.new
