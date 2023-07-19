@@ -43,7 +43,9 @@ class DigitalsController < ApplicationController
     params.require(:digital).permit(:page_id,
                                     :tile_id,
                                     :name,
-                                    :on,
+                                    :on_1,
+                                    :on_2,
+                                    :on_3,
                                     :off,
                                     :modbus_bit)
 

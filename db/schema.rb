@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_13_123859) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_19_143000) do
   create_table "analogs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "page_id", null: false
     t.integer "tile_id"
@@ -31,11 +31,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_123859) do
     t.bigint "page_id", null: false
     t.integer "tile_id"
     t.string "name"
-    t.integer "on"
+    t.integer "on_1"
     t.integer "off"
+    t.integer "modbus_index"
     t.integer "modbus_bit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "on_2"
+    t.integer "on_3"
     t.index ["page_id"], name: "index_digitals_on_page_id"
   end
 

@@ -1,5 +1,7 @@
 <%
-  @digital.on = -1 if @digital.on.blank?
+  @digital.on_1 = -1 if @digital.on_1.blank?
+  @digital.on_2 = -1 if @digital.on_2.blank?
+  @digital.on_3 = -1 if @digital.on_3.blank?
   @digital.off = -1 if @digital.off.blank?
 
   tmx_file = File.join(Rails.root, 'public', 'psg-dma-sample','psg-dma.tmx')
@@ -49,10 +51,21 @@
     <%= form.text_field :name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
   </div>
   <div class="mb-6">
-    <label for="on" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">On Image</label>
-    <%= form.hidden_field :on, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
-    <img id="digital_on_image" class="tile" style="background-position: <%= calculate_background_position(@digital.on) %>;" onclick="openOrFocusPopupWindow('digital_on')">
+    <label for="on_1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">On 1 Image</label>
+    <%= form.hidden_field :on_1, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
+    <img id="digital_on_1_image" class="tile" style="background-position: <%= calculate_background_position(@digital.on_1) %>;" onclick="openOrFocusPopupWindow('digital_on_1')">
   </div>
+
+  <label for="on_2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">On 2 Image</label>
+  <%= form.hidden_field :on_2, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
+  <img id="digital_on_2_image" class="tile" style="background-position: <%= calculate_background_position(@digital.on_2) %>;" onclick="openOrFocusPopupWindow('digital_on_2')">
+  </div>
+
+  <label for="on_3" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">On 3 Image</label>
+  <%= form.hidden_field :on_3, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
+  <img id="digital_on_3_image" class="tile" style="background-position: <%= calculate_background_position(@digital.on_3) %>;" onclick="openOrFocusPopupWindow('digital_on_3')">
+  </div>
+
   <div class="mb-6">
     <label for="off" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Off Image</label>
     <%= form.hidden_field :off, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>

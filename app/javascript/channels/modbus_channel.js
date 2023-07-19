@@ -2,6 +2,8 @@ import consumer from "channels/consumer"
 
 let mapData = "";
 
+let animation_tile = 0;
+
 function getApi() {
   const xhr = new XMLHttpRequest();
   const page = document.getElementById('page');
@@ -153,6 +155,7 @@ consumer.subscriptions.create("ModbusChannel", {
     // Digital value
     if (data.action === "digital") {
 
+      console.log(`animation_tile: ${animation_tile}`);
       const modbusArray = data.value.split("");
       const layer = "digital";
 
@@ -160,7 +163,13 @@ consumer.subscriptions.create("ModbusChannel", {
 
         const valveId = layer + '-' + item["tile_id"];
         const valveDiv = document.getElementById(valveId);
-        const valve_on = calculateBackgroundPosition(item["on"]);
+        let valve_on = "";
+
+        if (item["on_2"] === "") {
+          valve_on = calculateBackgroundPosition(item["on_1"]);
+        } else {
+          valve_on = calculateBackgroundPosition(item[`on_${animation_tile + 1}`]);
+        }
         const valve_off = calculateBackgroundPosition(item["off"]);
 
         if ( modbusArray[item["modbus_bit"]] === '0' ) {
@@ -170,8 +179,11 @@ consumer.subscriptions.create("ModbusChannel", {
         }
 
       });
+      animation_tile += 1;
+      if (animation_tile === 3) {
+        animation_tile = 0;
+      }
     }
-
     // Analog value
     if (data.action === "analog") {
 
