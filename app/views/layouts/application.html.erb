@@ -9,6 +9,8 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
 
   <body style="background-color: <%=params[:theme] %>;">
@@ -59,6 +61,9 @@
               edit_link = "?page=#{@page}&edit=on"
               edit_link = "?page=#{@page}&edit=off" if @edit == "on"%>
             <%= link_to "EDIT Mode", "/modbus#{edit_link}", class: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",  method: :get, data: { turbo: false } %>
+          </li>
+          <li>
+            <%= link_to "제품 탱크 등록", "/product_tanks", class: "block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",  method: :get, data: { turbo: false } %>
           </li>
         </ul>
       </div>

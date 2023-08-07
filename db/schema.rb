@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_19_143000) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_07_002032) do
   create_table "analogs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "page_id", null: false
     t.integer "tile_id"
@@ -63,6 +63,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_143000) do
   create_table "pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.integer "sort_order", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_tanks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "serial"
+    t.string "weight"
+    t.string "capacity"
+    t.string "inspection_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tank_logs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "serial"
+    t.string "capacity_filled"
+    t.string "moisture_quantity"
+    t.string "purity_analysis"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

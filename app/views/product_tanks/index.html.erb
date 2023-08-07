@@ -1,0 +1,61 @@
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<div id="modbus" class="flex justify-center">
+
+<%= render "form", product_tank: @new_product_tanks %>
+
+</div>
+
+
+<div id="modbus" class="flex justify-center">
+
+<table id="myTable" width="100%">
+  <thead>
+    <th>용기 시리얼</th>
+    <th>용기 중량</th>
+    <th>용기 충전량</th>
+    <th>용기 검사기한</th>
+    <th>용기 등록일</th>
+    <th>수정</th>
+    <th>삭제</th>
+  </thead>
+  <% @product_tanks.each do |pt| %>
+  <tr>
+    <td>
+      <%= pt.serial %>
+    </td>
+    <td>
+      <%= pt.weight %>
+    </td>
+    <td>
+      <%= pt.capacity %>
+    </td>
+    <td>
+      <%= pt.inspection_date %>
+    </td>
+    <td>
+      <%= pt.created_at.in_time_zone('Asia/Seoul') %>
+    </td>
+    <td>
+      <%= link_to "Edit", product_tank_path(pt) %>
+    </td>
+    <td>
+      <%= link_to "Destroy", product_tank_path(pt), data: {
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure?"
+      } %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            pageLength: -1, // 모든 항목을 보여주도록 페이지당 항목 수를 설정
+            lengthChange: false,
+            paging: false, // 페이징 컨트롤을 안 보이게 함
+        });
+    });
+</script>

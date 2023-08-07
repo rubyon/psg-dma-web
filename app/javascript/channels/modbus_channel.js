@@ -50,7 +50,7 @@ xhr.send();
 
 function calculatePercentage(value, min, max) {
   if (value < min || value > max) {
-    console.error("Value out of range"); // 범위를 벗어나는 경우 에러 처리
+    console.log("Value out of range"); // 범위를 벗어나는 경우 에러 처리
     return null;
   }
 
@@ -115,7 +115,8 @@ function analogUpdate( div, tileId, fontSize, color, value, offSetX, offSetY, al
 
   const anchorTag = document.createElement('a');
   anchorTag.href = link; // 원하는 링크 URL을 입력합니다.
-  anchorTag.appendChild(document.createTextNode(value)); // value를 텍스트 노드로 생성하여 <a> 태그 안에 추가합니다.
+  anchorTag.appendChild(document.createTextNode(value));
+
   anchorTag.setAttribute('data-turbo', 'false'); // turbo: false를 설정합니다.
 
   analogDiv.style.position = 'relative';
