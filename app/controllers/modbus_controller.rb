@@ -1,6 +1,5 @@
 class ModbusController < ApplicationController
   before_action :authenticate_user!
-
   def index
 
     title_ids = Title.pluck(:tile_id)

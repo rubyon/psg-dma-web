@@ -1,4 +1,5 @@
 class ProductTanksController < ApplicationController
+  before_action :authenticate_user!
   def index
     @product_tanks = ProductTank.all
     @new_product_tanks = ProductTank.new
@@ -25,7 +26,8 @@ class ProductTanksController < ApplicationController
     if @product_tank.update(product_tank_params)
       redirect_to product_tanks_path  # 수정 후 index 페이지로 리디렉션
     else
-      render :edit, status: :unprocessable_entity
+      @product_tanks = ProductTank.all  # 모든 레코드를 다시 가져와서 보여줌
+      render :index, status: :unprocessable_entity
     end
   end
 

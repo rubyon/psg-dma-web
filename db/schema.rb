@@ -10,7 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_07_002032) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_07_215315) do
+  create_table "analog_values", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.decimal "value1", precision: 10, scale: 1
+    t.decimal "value2", precision: 10, scale: 1
+    t.decimal "value3", precision: 10, scale: 1
+    t.decimal "value4", precision: 10, scale: 1
+    t.decimal "value5", precision: 10, scale: 1
+    t.decimal "value6", precision: 10, scale: 1
+    t.decimal "value7", precision: 10, scale: 1
+    t.decimal "value8", precision: 10, scale: 1
+    t.decimal "value9", precision: 10, scale: 1
+    t.decimal "value10", precision: 10, scale: 1
+    t.decimal "value11", precision: 10, scale: 1
+    t.decimal "value12", precision: 10, scale: 1
+    t.decimal "value13", precision: 10, scale: 1
+    t.decimal "value14", precision: 10, scale: 1
+    t.decimal "value15", precision: 10, scale: 1
+    t.decimal "value16", precision: 10, scale: 1
+    t.decimal "value17", precision: 10, scale: 1
+    t.decimal "value18", precision: 10, scale: 1
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "analogs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "page_id", null: false
     t.integer "tile_id"
@@ -27,13 +50,49 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_002032) do
     t.index ["page_id"], name: "index_analogs_on_page_id"
   end
 
+  create_table "digital_values", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "value1"
+    t.integer "value2"
+    t.integer "value3"
+    t.integer "value4"
+    t.integer "value5"
+    t.integer "value6"
+    t.integer "value7"
+    t.integer "value8"
+    t.integer "value9"
+    t.integer "value10"
+    t.integer "value11"
+    t.integer "value12"
+    t.integer "value13"
+    t.integer "value14"
+    t.integer "value15"
+    t.integer "value16"
+    t.integer "value17"
+    t.integer "value18"
+    t.integer "value19"
+    t.integer "value20"
+    t.integer "value21"
+    t.integer "value22"
+    t.integer "value23"
+    t.integer "value24"
+    t.integer "value25"
+    t.integer "value26"
+    t.integer "value27"
+    t.integer "value28"
+    t.integer "value29"
+    t.integer "value30"
+    t.integer "value31"
+    t.integer "value32"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "digitals", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "page_id", null: false
     t.integer "tile_id"
     t.string "name"
     t.integer "on_1"
     t.integer "off"
-    t.integer "modbus_index"
     t.integer "modbus_bit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -83,6 +142,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_002032) do
     t.string "purity_analysis"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "material_tank_serial"
   end
 
   create_table "titles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

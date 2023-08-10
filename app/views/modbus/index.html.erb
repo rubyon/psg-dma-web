@@ -20,7 +20,7 @@
 </style>
 <div id="page" style="display: none;"><%= @page %></div>
 
-<div id="modbus" class="flex justify-center">
+<div id="modbus" class="flex justify-center" style="margin-top:30px;">
   <% @layer_data.each_with_index do |layer, layer_index| %>
     <div class="tile-map absolute">
       <% layer[0][:data].each_with_index do |tile_id, tile_index| %>
@@ -75,13 +75,13 @@
 
     function updateScale() {
         const browserWidth = window.innerWidth; // 브라우저의 가로 길이
-        const browserHeight = window.innerHeight - 100; // 브라우저의 세로 길이
+        const browserHeight = window.innerHeight; // 브라우저의 세로 길이
         console.log('브라우저 가로 길이:', browserWidth, '픽셀');
         console.log('브라우저 세로 길이:', browserHeight, '픽셀');
 
         if (width > browserWidth || height > browserHeight) {
-            const widthRatio = (browserWidth - (browserWidth * 0.01)) / width;
-            const heightRatio = (browserHeight - (browserHeight * 0.01)) / height;
+            const widthRatio = (browserWidth - 50) / width;
+            const heightRatio = (browserHeight - 50) / height;
             scaleRatio = Math.min(widthRatio, heightRatio);
             scaleRatio = roundToEven(scaleRatio);
         } else {

@@ -1,0 +1,2 @@
+class AnalogValue < ApplicationRecord
+end

@@ -97,7 +97,7 @@ function barGaugeUpdate( div, tileId, width, height, value, offSetX, offSetY, fo
   afterElement.style.height = `${value}%`;
 }
 
-function analogUpdate( div, tileId, fontSize, color, value, offSetX, offSetY, align, scale = 1, link ) {
+function analogUpdate( div, tileId, fontSize, color, value, offSetX, offSetY, align, scale = 1, link = null ) {
 
   if ( link === null ) {
     link = "#";
@@ -115,7 +115,12 @@ function analogUpdate( div, tileId, fontSize, color, value, offSetX, offSetY, al
 
   const anchorTag = document.createElement('a');
   anchorTag.href = link; // 원하는 링크 URL을 입력합니다.
-  anchorTag.appendChild(document.createTextNode(value));
+
+  if (typeof value === 'number') {
+    anchorTag.appendChild(document.createTextNode(value.toFixed(1)));
+  } else {
+    anchorTag.appendChild(document.createTextNode(value));
+  }
 
   anchorTag.setAttribute('data-turbo', 'false'); // turbo: false를 설정합니다.
 
@@ -136,13 +141,6 @@ consumer.subscriptions.create("ModbusChannel", {
   connected() {
     // Called when the subscription is ready for use on the server
     console.log("Connected to the modbus channel");
-
-    // Add Title Text
-    let titleIndex = 0
-    mapData["titles"].forEach( item => {
-      analogUpdate( `title_${titleIndex}`, item.tile_id, item.font_size, item.font_color,item.text, item.offset_x, item.offset_y, item.align, item.scale, item.link);
-      titleIndex += 1;
-    });
   },
 
   disconnected() {
@@ -152,6 +150,13 @@ consumer.subscriptions.create("ModbusChannel", {
   received(data) {
     // Called when there's incoming data on the websocket for this channel
     console.log(data);
+
+    // Add Title Text
+    let titleIndex = 0
+    mapData["titles"].forEach( item => {
+      analogUpdate( `title_${titleIndex}`, item.tile_id, item.font_size, item.font_color,item.text, item.offset_x, item.offset_y, item.align, item.scale, item.link);
+      titleIndex += 1;
+    });
 
     // Digital value
     if (data.action === "digital") {

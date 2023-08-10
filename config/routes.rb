@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :titles
   resources :gauges
   resources :product_tanks
+  resources :tank_logs
 
   get "/map", to: "digitals#map"
   post "/api/login", to: "api#login"

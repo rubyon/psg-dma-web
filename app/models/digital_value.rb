@@ -1,0 +1,2 @@
+class DigitalValue < ApplicationRecord
+end

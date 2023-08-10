@@ -1,4 +1,6 @@
 class GaugesController < ApplicationController
+  before_action :authenticate_user!
+
   layout 'edit'  # 레이아웃 비활성화
 
   def edit

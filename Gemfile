@@ -79,3 +79,4 @@ gem 'devise'
 gem "websocket-client-simple"
 gem "rmodbus"
 gem "tmx"
+gem "pagy"
