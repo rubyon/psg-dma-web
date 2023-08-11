@@ -10,14 +10,14 @@ require './app/models/tank_log'
 require './app/models/analog_value'
 require './app/models/digital_value'
 
-LOG = false
+LOG = true
 
 $time_now = DateTime.now
 $old_time = $time_now
 $old_digital = "0"
 
 def connect_websocket
-  WebSocket::Client::Simple.connect('ws://127.0.0.1:3001/cable')
+  WebSocket::Client::Simple.connect('ws://127.0.0.1:3000/cable')
 end
 
 def subscribe_channel(ws)

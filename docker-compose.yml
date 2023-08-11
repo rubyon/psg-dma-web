@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  psg-dma-web:
+    container_name: psg-dma-web
+    image: hub.rubyon.co.kr/psg-dma
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - /Users/rubyon/NTC/psg-dma-web:/app
+    links:
+      - psg-dma-db:mysql
+    depends_on:
+      - psg-dma-db
+
+  psg-dma-db:
+    container_name: psg-dma-db
+    image: mysql:8
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: "98010~!@"
+      MYSQL_DATABASE: psg-dma
+    volumes:
+      - /Users/rubyon/NTC/psg-dma-db/mysql:/var/lib/mysql
