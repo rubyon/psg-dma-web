@@ -13,8 +13,9 @@ Rails.application.routes.draw do
   resources :tank_logs
 
   get "/map", to: "digitals#map"
-  post "/api/login", to: "api#login"
-  post "/api/get_list", to: "api#get_list"
-  post "/api/post_list", to: "api#post_list"
+  post "/mobile/account/login", to: "api#login"
+  post "/relic/mobile/tag/findLocCodeList.json", to: "api#get_location"
+  post "/relic/mobile/tag/findLocTagList.json", to: "api#get_list"
+  post "/mobile/relic/addModSurvey", to: "api#post_list"
 
 end

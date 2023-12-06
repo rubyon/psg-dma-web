@@ -2,12 +2,12 @@ version: "3.7"
 services:
   psg-dma-web:
     container_name: psg-dma-web
-    image: hub.rubyon.co.kr/psg-dma-arm64
+    image: hub.rubyon.co.kr/psg-dma-amd64
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - 3030:3000
     volumes:
-      - /Users/rubyon/NTC/psg-dma-web:/app
+      - /home/rubyon/psg-dma-web:/app
     links:
       - psg-dma-db:mysql
     depends_on:
@@ -24,4 +24,4 @@ services:
       MYSQL_ROOT_PASSWORD: "98010~!@"
       MYSQL_DATABASE: psg-dma
     volumes:
-      - /Users/rubyon/NTC/psg-dma-db/mysql:/var/lib/mysql
+      - /home/docker/psg-dma-db/mysql:/var/lib/mysql
