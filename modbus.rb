@@ -17,7 +17,7 @@ $old_time = $time_now
 $old_digital = "0"
 
 def connect_websocket
-  WebSocket::Client::Simple.connect('ws://127.0.0.1:3030/cable')
+  WebSocket::Client::Simple.connect('ws://127.0.0.1:3000/cable')
 end
 
 def subscribe_channel(ws)
